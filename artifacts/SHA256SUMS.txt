@@ -1,0 +1,3 @@
+886ee84de62e63d3dae04e26441d08b4ff569d5745a53cd0ec8743cf430c961d  ghostredact_v0.1.0_darwin_arm64.zip
+f8e67ec9815163f6f146d489d15c77d16005558e43e00053226a0ca653fd0d64  ghostredact_v0.1.0_linux_amd64.zip
+13bf2582136aa50e28f4229619cea4dd8116f39005a2c5788c95a3ede5edb0c5  ghostredact_v0.1.0_windows_amd64.zip
