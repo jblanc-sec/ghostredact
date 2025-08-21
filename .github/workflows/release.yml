@@ -1,0 +1,81 @@
+name: release
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+jobs:
+  build-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { goos: linux,   goarch: amd64, ext: ""     }
+          - { goos: windows, goarch: amd64, ext: ".exe" }
+          - { goos: darwin,  goarch: arm64, ext: ""     } # unsigned
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.x'
+
+      - name: Build
+        run: |
+          mkdir -p dist
+          CGO_ENABLED=0 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
+            go build -trimpath -ldflags "-s -w" -o "dist/ghostredact${{ matrix.ext }}" ./cmd/ghostredact
+
+      - name: Package
+        run: |
+          cp README.md dist/
+          NAME="ghostredact_${{ github.ref_name }}_${{ matrix.goos }}_${{ matrix.goarch }}"
+          if [ "${{ matrix.ext }}" = ".exe" ]; then
+            (cd dist && zip -j "../${NAME}.zip" ghostredact.exe README.md)
+          else
+            (cd dist && zip -j "../${NAME}.zip" ghostredact README.md)
+          fi
+
+      - name: Compute checksums
+        if: matrix.goos == 'darwin' && matrix.goarch == 'arm64'
+        run: |
+          # Generate checksums once (after the last matrix job finishes)
+          echo "Waiting for other artifacts..."
+        shell: bash
+
+      - name: Upload artifacts (per matrix)
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: |
+            ghostredact_*.zip
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: build-matrix
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Move artifacts to root and create checksums
+        run: |
+          shopt -s globstar nullglob
+          mv artifacts/**/ghostredact_*.zip .
+          sha256sum ghostredact_*.zip > SHA256SUMS.txt
+          ls -l
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ghostredact_*.zip
+            SHA256SUMS.txt
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
