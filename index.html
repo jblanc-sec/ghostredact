@@ -12,16 +12,38 @@
 <body>
   <div class="hero">
     <h1>GhostRedact</h1>
-    <p>Scrub emails, phones, API keys, and card numbers from logs & docs.</p>
+       <p><strong>Scrub emails, phones, keys, and card numbers from logs & docs — fast & offline.</strong></p>
     <img src="assets/screenshot.png" alt="demo" width="500">
     <p>
       <a class="cta" href="https://jblancdev.gumroad.com/l/ghostredact">Buy for $9</a>
     </p>
   </div>
+<h2>What it does</h2>
   <ul>
-    <li>Cross-platform CLI + hosted API</li>
-    <li>Regex & heuristic detection</li>
-    <li>No data stored; in-memory only</li>
+    <li>Cross-platform CLI (Windows, macOS, Linux)</li>
+    <li>Detects: emails, phone numbers, IPs, credit cards (Luhn), JWTs, AWS keys, UUIDs, IBAN, dates</li>
+    <li>Redaction styles: <code>***</code>, <code>[REDACTED:TYPE]</code>, or hash</li>
+    <li>Works with <code>.txt</code>, <code>.log</code>, <code>.json</code>, <code>.csv</code></li>
+    <li>Runs 100% offline — nothing leaves your machine</li>
   </ul>
+
+  <h2>Quickstart</h2>
+  <pre><code># redact a file
+ghostredact --in server.log --out clean.log
+
+# or from stdin
+cat dump.txt | ghostredact --style stars > clean.txt
+</code></pre>
+
+  <h2>Planned roadmap</h2>
+  <ul>
+    <li>PDF redaction (text layer first, OCR later)</li>
+    <li>Optional hosted API for batch jobs</li>
+    <li>VSCode extension for in-editor use</li>
+  </ul>
+
+  <footer>
+    <p>© 2025 GhostRedact • Refunds: 7-day, no questions asked • <a href="https://github.com/jblancdev/ghostredact">GitHub Repo</a></p>
+  </footer>
 </body>
 </html>
