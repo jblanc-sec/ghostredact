@@ -1,4 +1,3 @@
-
 [![Release](https://img.shields.io/github/v/release/jblancdev/ghostredact?style=flat-square)](https://github.com/jblancdev/ghostredact/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jblancdev/ghostredact)](https://goreportcard.com/report/github.com/jblancdev/ghostredact)
 [![CI](https://github.com/jblancdev/ghostredact/actions/workflows/ci.yml/badge.svg)](https://github.com/jblancdev/ghostredact/actions/workflows/ci.yml)
@@ -13,11 +12,15 @@ Supports **custom regex patterns** and optional locale packs (e.g. Brazil: CPF, 
 
 Download the latest binaries from [Releases](https://github.com/jblancdev/ghostredact/releases).
 
+Or get the **prepackaged version with Quick Start PDF + bonus patterns**:  
+- [Gumroad](https://jblancdev.gumroad.com/l/ghostredact)  
+- [Payhip](https://payhip.com/b/Wg2aD)  
+
 ---
 
 # GhostRedact — PII redaction CLI (MVP)
 
-Fast, single-binary CLI that redacts common PII in **text** or **JSON**.
+Fast, single-binary CLI that redacts common PII in **text** or **JSON**.  
 Defaults: emails, phone numbers, credit cards (Luhn), IPv4/IPv6, IBAN.
 
 ## Build (Linux/WSL2)
