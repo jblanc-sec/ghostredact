@@ -1,49 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>GhostRedact — PII Redaction CLI & API</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GhostRedact — PII Redaction CLI</title>
+  <meta name="description" content="Fast, offline CLI to redact PII from text & JSON. Built‑in detectors (email, phone, credit card with Luhn, IPv4/IPv6, IBAN), JSON mode, hash/mask/tag, reports, and custom regex patterns. Works on Windows, macOS, and Linux." />
+  <link rel="canonical" href="https://jblancdev.github.io/ghostredact/" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="GhostRedact — PII Redaction CLI" />
+  <meta property="og:description" content="Scrub emails, phones, credit cards, IPs (and more) from logs & JSON. Fast. Offline. No telemetry." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/cover.png" />
+  <meta property="og:url" content="https://jblancdev.github.io/ghostredact/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 2em auto; }
-    .hero { text-align: center; }
-    .cta { background: black; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; }
+    :root{
+      --bg:#0b0d10; --fg:#e8eaed; --muted:#a5acb8; --brand:#15b7b9; --brand2:#0ea5e9; --card:#111418;
+      --btn:#111827; --btn-fg:#e8eaed; --border:#1f242c; --ok:#22c55e;
+      --code-bg:#0f1318; --code-border:#1b2027;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif; background:var(--bg); color:var(--fg); line-height:1.6}
+    a{color:var(--brand2); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:960px; margin:0 auto; padding:32px 20px}
+    header.hero{display:grid; gap:20px; align-items:center; grid-template-columns:1.2fr 1fr}
+    @media (max-width:900px){header.hero{grid-template-columns:1fr}}
+    .title{font-size:clamp(28px,4vw,44px); margin:0}
+    .subtitle{margin:4px 0 0; color:var(--muted)}
+    .cta-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:16px}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:10px; border:1px solid var(--border); background:var(--btn); color:var(--btn-fg); font-weight:600}
+    .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2)); border-color:transparent}
+    .btn.secondary{background:transparent}
+    .badge{display:inline-block; padding:4px 10px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:12px}
+    .card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px}
+    .grid{display:grid; gap:16px}
+    .grid.features{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (max-width:720px){.grid.features{grid-template-columns:1fr}}
+    .feature h3{margin:0 0 6px; font-size:16px}
+    pre{background:var(--code-bg); border:1px solid var(--code-border); padding:14px; border-radius:10px; overflow:auto}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; font-size:0.95em}
+    footer{margin-top:40px; padding:24px 0; color:var(--muted); border-top:1px solid var(--border); font-size:14px}
+    img.hero-shot{width:100%; border-radius:12px; border:1px solid var(--border); background:#000}
+    .pill{display:inline-block; margin-top:8px}
+    .ok{color:var(--ok); font-weight:600}
   </style>
 </head>
 <body>
-  <div class="hero">
-    <h1>GhostRedact</h1>
-       <p><strong>Scrub emails, phones, keys, and card numbers from logs & docs — fast & offline.</strong></p>
-    <img src="assets/screenshot.png" alt="demo" width="500">
-    <p>
-      <a class="cta" href="https://jblancdev.gumroad.com/l/ghostredact">Buy for $9</a>
-    </p>
+  <div class="wrap">
+    <header class="hero">
+      <div>
+        <span class="badge pill">Fast • Offline • No telemetry</span>
+        <h1 class="title">GhostRedact</h1>
+        <p class="subtitle"><strong>Scrub emails, phones, card numbers, and IPs from logs & JSON — quickly, locally, and reliably.</strong></p>
+        <div class="cta-row">
+          <a class="btn primary" href="https://github.com/jblancdev/ghostredact/releases">
+            ⬇ Download free on GitHub
+          </a>
+          <a class="btn secondary" href="https://jblancdev.gumroad.com/l/ghostredact">
+            💾 Buy packaged ($9)
+          </a>
+          <a class="btn secondary" href="https://jblancdev.payhip.com/b/ghostredact">
+            🛒 Payhip
+          </a>
+          <a class="btn secondary" href="https://github.com/jblancdev/ghostredact">
+            ⭐ GitHub Repo
+          </a>
+        </div>
+        <div class="pill">Works on <strong>Windows • macOS (arm64) • Linux</strong></div>
+      </div>
+      <div>
+        <img class="hero-shot" src="assets/screenshot.png" alt="GhostRedact CLI demo redacting PII in terminal">
+      </div>
+    </header>
+
+    <section class="grid features" style="margin-top:24px">
+      <div class="card feature">
+        <h3>Built‑in detectors</h3>
+        <p>Email, phone, credit card (<em>Luhn</em>), IPv4/IPv6, IBAN.</p>
+      </div>
+      <div class="card feature">
+        <h3>Extensible rules</h3>
+        <p>Load <code>JSON/YAML</code> custom patterns. Bonus pack includes JWT, UUID, AWS keys, MAC, API keys, and more.</p>
+      </div>
+      <div class="card feature">
+        <h3>Redaction modes</h3>
+        <p><code>mask</code>, <code>tag</code>, or <code>hash</code> (with <code>-salt</code>). Optional JSON report of counts.</p>
+      </div>
+      <div class="card feature">
+        <h3>Formats & performance</h3>
+        <p>Text and JSON (walks nested values), streams or files. Single static binary; runs 100% offline.</p>
+      </div>
+    </section>
+
+    <section style="margin-top:28px">
+      <h2>Quickstart</h2>
+      <pre><code># Redact a file (mask mode by default)
+ghostredact -in server.log -out clean.log
+
+# JSON-aware redaction (tag mode)
+ghostredact -in sample.json -format json -mode tag -out clean.json
+
+# From stdin to stdout
+cat dump.txt | ghostredact -mode tag &gt; clean.txt
+
+# Counts report (JSON) written to file
+ghostredact -in server.log -report report.json
+
+# Use custom patterns (JSON/YAML)
+ghostredact -in logs.txt --custom patterns.json -mode tag</code></pre>
+    </section>
+
+    <section style="margin-top:8px">
+      <h2>What it does</h2>
+      <ul>
+        <li>Cross‑platform CLI: Windows, macOS (arm64), Linux</li>
+        <li><strong>Built‑in:</strong> emails, phones, credit cards (Luhn), IPv4/IPv6, IBAN</li>
+        <li><strong>Extras via bonus patterns:</strong> JWT, AWS keys, UUID, MAC, generic API keys, etc.</li>
+        <li>Redaction styles: <code>mask</code> (****), <code>tag</code> (&lt;EMAIL&gt;, &lt;PHONE&gt;), or <code>hash</code></li>
+        <li>Works with <code>.txt</code>, <code>.log</code>, <code>.json</code>, and streams (stdin/stdout)</li>
+        <li>Runs 100% offline — nothing leaves your machine</li>
+      </ul>
+    </section>
+
+    <section style="margin-top:8px">
+      <h2>Planned roadmap</h2>
+      <ul>
+        <li>PDF redaction (text layer first; OCR later)</li>
+        <li>Optional hosted API for batch jobs</li>
+        <li>VS Code extension for in‑editor use</li>
+      </ul>
+      <p class="badge">Status: <span class="ok">Active</span></p>
+    </section>
+
+    <footer>
+      <p>© 2025 J. Blanc • <a href="https://github.com/jblancdev/ghostredact">GitHub Repo</a></p>
+    </footer>
   </div>
-<h2>What it does</h2>
-  <ul>
-    <li>Cross-platform CLI (Windows, macOS, Linux)</li>
-    <li>Detects: emails, phone numbers, IPs, credit cards (Luhn), JWTs, AWS keys, UUIDs, IBAN, dates</li>
-    <li>Redaction styles: <code>***</code>, <code>[REDACTED:TYPE]</code>, or hash</li>
-    <li>Works with <code>.txt</code>, <code>.log</code>, <code>.json</code>, <code>.csv</code></li>
-    <li>Runs 100% offline — nothing leaves your machine</li>
-  </ul>
-
-  <h2>Quickstart</h2>
-  <pre><code># redact a file
-ghostredact --in server.log --out clean.log
-
-# or from stdin
-cat dump.txt | ghostredact --style stars > clean.txt
-</code></pre>
-
-  <h2>Planned roadmap</h2>
-  <ul>
-    <li>PDF redaction (text layer first, OCR later)</li>
-    <li>Optional hosted API for batch jobs</li>
-    <li>VSCode extension for in-editor use</li>
-  </ul>
-
-  <footer>
-    <p>© 2025 J Blanc • <a href="https://github.com/jblancdev/ghostredact">GitHub Repo</a></p>
-  </footer>
 </body>
 </html>
